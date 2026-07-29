@@ -90,10 +90,32 @@ jobs:
           python-version: "3.12"
       - run: pip install scons
 
+      - name: Install D3D12 SDK (Windows)
+        if: matrix.platform == 'windows'
+        id: d3d12-sdk
+        shell: pwsh
+        run: |
+          if (python ./misc/scripts/install_d3d12_sdk_windows.py) {
+            echo "D3D12_ENABLED=yes" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "D3D12_ENABLED=no" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Install AccessKit SDK (Windows)
+        if: matrix.platform == 'windows'
+        id: accesskit-sdk
+        shell: pwsh
+        run: |
+          if (python ./misc/scripts/install_accesskit.py) {
+            echo "ACCESSKIT_ENABLED=yes" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "ACCESSKIT_ENABLED=no" >> $env:GITHUB_OUTPUT
+          }
+
       - name: Build (Windows)
         if: matrix.platform == 'windows'
         shell: pwsh
-        run: scons platform=windows target=editor arch=x86_64 production=yes -j $env:NUMBER_OF_PROCESSORS
+        run: scons platform=windows target=editor arch=x86_64 production=yes d3d12=${{ steps.d3d12-sdk.outputs.D3D12_ENABLED }} accesskit=${{ steps.accesskit-sdk.outputs.ACCESSKIT_ENABLED }} -j $env:NUMBER_OF_PROCESSORS
 
       - name: Build (Linux)
         if: matrix.platform == 'linuxbsd'
