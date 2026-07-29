@@ -37,7 +37,6 @@
 #include "main/performance.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
-#include "scene/resources/viewport_texture.h"
 #include "servers/rendering_server.h"
 
 #ifdef RD_ENABLED
