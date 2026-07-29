@@ -70,6 +70,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git config user.name "toqraq-ci"
+          git config user.email "ci@toqraq.local"
           git remote add upstream https://github.com/godotengine/godot.git || true
           git fetch upstream --depth 1 "refs/tags/${{ matrix.tag }}"
           branch="toqraq/${{ matrix.tag }}"
