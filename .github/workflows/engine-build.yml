@@ -67,6 +67,7 @@ jobs:
           fetch-depth: 0
 
       - name: Create engine branch at upstream tag
+        shell: bash
         run: |
           set -euo pipefail
           git remote add upstream https://github.com/godotengine/godot.git || true
